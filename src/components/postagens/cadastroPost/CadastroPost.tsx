@@ -31,7 +31,13 @@ function CadastroPost() {
         id: 0,
         titulo: '',
         texto: '',
-        tema: null
+        tema: null,
+        usuario: {
+            id: 1,
+            nome: '',
+            usuario: '',
+            senha: ''
+        }
     })
 
     useEffect(() => {
