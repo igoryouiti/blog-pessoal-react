@@ -18,6 +18,7 @@ function CadastroUsuario() {
             id: 0,
             nome: '',
             usuario: '',
+            foto: null,
             senha: ''
         })
     const [userResult, setUserResult] = useState<User>(
@@ -25,6 +26,7 @@ function CadastroUsuario() {
             id: 0,
             nome: '',
             usuario: '',
+            foto: null,
             senha: ''
         })
     useEffect(() => {
@@ -43,8 +45,11 @@ function CadastroUsuario() {
     }
     async function onSubmit(e: ChangeEvent<HTMLFormElement>) {
         e.preventDefault()
+
+    
         if (confirmarSenha === user.senha) {
             cadastroUsuario(`/usuarios/cadastrar`, user, setUserResult)
+            console.log(JSON.stringify(userResult))
             alert('Usuario cadastrado com sucesso')
         } else {
             alert('Dados inconsistentes. Favor verificar as informações de cadastro.')
