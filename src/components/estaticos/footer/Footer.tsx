@@ -6,10 +6,19 @@ import { Box } from '@mui/material'
 import React from 'react'
 
 import './Footer.css'
+import { useSelector } from 'react-redux'
+import { TokenState } from '../../../store/tokens/actions'
 
 function Footer() {
-    return (
-        <>
+
+    const token = useSelector<TokenState, TokenState['tokens']>(
+        (state) => state.tokens
+    )
+
+    var footerComponent
+
+    if (token !== '') {
+        footerComponent =
             <Grid container direction="row" justifyContent="center" alignItems="center">
                 <Grid alignItems="center" item xs={12}>
                     <Box className='box1'>
@@ -40,6 +49,12 @@ function Footer() {
                     </Box>
                 </Grid>
             </Grid>
+    }
+
+
+    return (
+        <>
+            {footerComponent}
         </>
     )
 }
