@@ -1,4 +1,4 @@
-import React, {useState, useEffect, ChangeEvent} from 'react'
+import React, { useState, useEffect, ChangeEvent } from 'react'
 import { Container, Typography, TextField, Button } from "@material-ui/core"
 import Tema from '../../../models/Tema';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -11,7 +11,7 @@ import { TokenState } from '../../../store/tokens/actions';
 function CadastroTema() {
 
     let navigate = useNavigate();
-    const { id } = useParams<{id: string}>();
+    const { id } = useParams<{ id: string }>();
 
     const [tema, setTema] = useState<Tema>({
         id: 0,
@@ -20,18 +20,18 @@ function CadastroTema() {
 
     const token = useSelector<TokenState, TokenState['tokens']>(
         (state) => state.tokens
-      )
+    )
 
     useEffect(() => {
         if (token == "") {
             alert("Você precisa estar logado")
             navigate("/login")
-    
+
         }
     }, [token])
 
-    useEffect(() =>{
-        if(id !== undefined){
+    useEffect(() => {
+        if (id !== undefined) {
             findById(id)
         }
     }, [id])
@@ -39,48 +39,69 @@ function CadastroTema() {
     async function findById(id: string) {
         buscaId(`/temas/${id}`, setTema, {
             headers: {
-              'Authorization': token
+                'Authorization': token
             }
-          })
-        }
+        })
+    }
 
-        function updatedTema(e: ChangeEvent<HTMLInputElement>) {
+    function updatedTema(e: ChangeEvent<HTMLInputElement>) {
 
-            setTema({
-                ...tema,
-                [e.target.name]: e.target.value,
-            })
-    
-        }
-        
-        async function onSubmit(e: ChangeEvent<HTMLFormElement>) {
-            e.preventDefault()
-            console.log("tema " + JSON.stringify(tema))
-    
-            if (id !== undefined) {
-                console.log(tema)
-                put(`/temas`, tema, setTema, {
+        setTema({
+            ...tema,
+            [e.target.name]: e.target.value,
+        })
+
+    }
+
+    async function onSubmit(e: ChangeEvent<HTMLFormElement>) {
+        e.preventDefault()
+
+        // Se o ID for diferente de indefinido tente Atualizar
+        if (id !== undefined) {
+
+            // TRY: Tenta executar a atualização 
+            try {
+                await put(`/temas`, tema, setTema, {
                     headers: {
                         'Authorization': token
                     }
                 })
+
                 alert('Tema atualizado com sucesso');
-            } else {
-                post(`/temas`, tema, setTema, {
+
+                // CATCH: Caso tenha algum erro, pegue esse erro e mande uma msg para o usuário
+            } catch (error) {
+                console.log(`Error: ${error}`)
+                alert("Erro, por favor verifique a quantidade minima de caracteres")
+            }
+
+            // Se o ID for indefinido, tente Cadastrar
+        } else {
+
+            // TRY: Tenta executar o cadastro
+            try {
+                await post(`/temas`, tema, setTema, {
                     headers: {
                         'Authorization': token
                     }
                 })
+
                 alert('Tema cadastrado com sucesso');
+
+                // CATCH: Caso tenha algum erro, pegue esse erro e mande uma msg para o usuário
+            } catch (error) {
+                console.log(`Error: ${error}`)
+                alert("Erro, por favor verifique a quantidade minima de caracteres")
             }
-            back()
-    
         }
-    
-        function back() {
-            navigate('/temas')
-        }
-  
+
+        back()
+    }
+
+    function back() {
+        navigate('/temas')
+    }
+
     return (
         <Container maxWidth="sm" className="topo">
             <form onSubmit={onSubmit}>

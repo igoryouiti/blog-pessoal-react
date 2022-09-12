@@ -46,13 +46,27 @@ function CadastroUsuario() {
     async function onSubmit(e: ChangeEvent<HTMLFormElement>) {
         e.preventDefault()
 
-    
-        if (confirmarSenha === user.senha) {
-            cadastroUsuario(`/usuarios/cadastrar`, user, setUserResult)
-            console.log(JSON.stringify(userResult))
-            alert('Usuario cadastrado com sucesso')
+        // Estrutura Condicional que verifica se as senhas batem e se a Senha tem mais de 8 caracteres
+        if (confirmarSenha === user.senha && user.senha.length >= 8) {
+
+            //Tenta executar o cadastro
+            try {
+                await cadastroUsuario(`/usuarios/cadastrar`, user, setUserResult)
+                alert('Usuario cadastrado com sucesso')
+
+                //Se houver erro, pegue o Erro e retorna uma msg
+            } catch (error) {
+                console.log(`Error: ${error}`)
+
+                //Pode modificar a msg de acordo com o erro 
+                alert("Erro ao cadastrar o Usuário")
+            }
+
         } else {
-            alert('Dados inconsistentes. Favor verificar as informações de cadastro.')
+            alert('Dados inconsistentes. Verifique as informações de cadastro.')
+
+            setUser({ ...user, senha: "" }) // Reinicia o campo de Senha
+            setConfirmarSenha("")           // Reinicia o campo de Confirmar Senha
         }
     }
 
@@ -71,21 +85,21 @@ function CadastroUsuario() {
                             className='textos2'>
                             Cadastrar
                         </Typography>
-                        <TextField value={user.nome} onChange={(e:ChangeEvent<HTMLInputElement>) => updatedModel(e)}
+                        <TextField value={user.nome} onChange={(e: ChangeEvent<HTMLInputElement>) => updatedModel(e)}
                             id='nome'
                             label='nome'
                             variant='outlined'
                             name='nome'
                             margin='normal'
                             fullWidth />
-                        <TextField value={user.usuario} onChange={(e:ChangeEvent<HTMLInputElement>) => updatedModel(e)}
+                        <TextField value={user.usuario} onChange={(e: ChangeEvent<HTMLInputElement>) => updatedModel(e)}
                             id='usuario'
                             label='usuário'
                             variant='outlined'
                             name='usuario'
                             margin='normal'
                             fullWidth />
-                        <TextField value={user.senha} onChange={(e:ChangeEvent<HTMLInputElement>) => updatedModel(e)} 
+                        <TextField value={user.senha} onChange={(e: ChangeEvent<HTMLInputElement>) => updatedModel(e)}
                             id='senha'
                             label='senha'
                             variant='outlined'
@@ -93,7 +107,7 @@ function CadastroUsuario() {
                             type={'password'}
                             margin='normal'
                             fullWidth />
-                        <TextField value={confirmarSenha} onChange={(e:ChangeEvent<HTMLInputElement>) => confirmarSenhaHandle(e)} 
+                        <TextField value={confirmarSenha} onChange={(e: ChangeEvent<HTMLInputElement>) => confirmarSenhaHandle(e)}
                             id='confirmarSenha'
                             label='confirmar senha'
                             variant='outlined'

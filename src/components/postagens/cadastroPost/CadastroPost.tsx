@@ -16,7 +16,7 @@ function CadastroPost() {
 
     const token = useSelector<TokenState, TokenState['tokens']>(
         (state) => state.tokens
-      )
+    )
 
     useEffect(() => {
         if (token == "") {
@@ -87,23 +87,46 @@ function CadastroPost() {
     async function onSubmit(e: ChangeEvent<HTMLFormElement>) {
         e.preventDefault()
 
+        // Se o ID for diferente de indefinido tente Atualizar
         if (id !== undefined) {
-            put(`/postagens`, postagem, setPostagem, {
-                headers: {
-                    'Authorization': token
-                }
-            })
-            alert('Postagem atualizada com sucesso');
-        } else {
-            post(`/postagens`, postagem, setPostagem, {
-                headers: {
-                    'Authorization': token
-                }
-            })
-            alert('Postagem cadastrada com sucesso');
-        }
-        back()
 
+            // TRY: Tenta executar a atualização 
+            try {
+                await put(`/postagens`, postagem, setPostagem, {
+                    headers: {
+                        'Authorization': token
+                    }
+                })
+
+                alert('Post atualizado com sucesso');
+
+                // CATCH: Caso tenha algum erro, pegue esse erro e mande uma msg para o usuário
+            } catch (error) {
+                console.log(`Error: ${error}`)
+                alert("Erro, por favor verifique a quantidade minima de caracteres")
+            }
+
+            // Se o ID for indefinido, tente Cadastrar
+        } else {
+
+            // TRY: Tenta executar o cadastro
+            try {
+                await post(`/postagens`, postagem, setPostagem, {
+                    headers: {
+                        'Authorization': token
+                    }
+                })
+
+                alert('Post cadastrado com sucesso');
+
+                // CATCH: Caso tenha algum erro, pegue esse erro e mande uma msg para o usuário
+            } catch (error) {
+                console.log(`Error: ${error}`)
+                alert("Erro, por favor verifique a quantidade minima de caracteres")
+            }
+        }
+
+        back()
     }
 
     function back() {
