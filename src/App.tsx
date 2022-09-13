@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import './App.css';
 
 
@@ -17,10 +18,12 @@ import CadastroUsuario from './paginas/cadastroUsuario/CadastroUsuario';
 import Home from './paginas/home/Home';
 import Login from './paginas/login/Login';
 import { store } from './store/store';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
     <Provider store={store}>
+      <ToastContainer />
       <Router>
         <Navbar />
         <div style={{ minHeight: '100vh' }}>

@@ -7,6 +7,7 @@ import Postagem from '../../../models/Postagem';
 import { busca, buscaId, post, put } from '../../../services/Service';
 import { useSelector } from 'react-redux';
 import { TokenState } from '../../../store/tokens/actions';
+import {toast} from 'react-toastify'
 
 function CadastroPost() {
 
@@ -20,7 +21,16 @@ function CadastroPost() {
 
     useEffect(() => {
         if (token == "") {
-            alert("Você precisa estar logado")
+            toast.error('Usuário precisa estar logado', {
+                position: 'top-right',
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                theme: 'colored',
+                progress: undefined,
+              })
             navigate("/login")
 
         }
@@ -98,12 +108,30 @@ function CadastroPost() {
                     }
                 })
 
-                alert('Post atualizado com sucesso');
+                toast.success('Postagem atualizada com sucesso', {
+                    position: 'top-right',
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    theme: 'colored',
+                    progress: undefined,
+                  })
 
                 // CATCH: Caso tenha algum erro, pegue esse erro e mande uma msg para o usuário
             } catch (error) {
                 console.log(`Error: ${error}`)
-                alert("Erro, por favor verifique a quantidade minima de caracteres")
+                toast.warning('Erro, por favor verifique a quantidade minima de caracteres', {
+                    position: 'top-right',
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    theme: 'colored',
+                    progress: undefined,
+                  })
             }
 
             // Se o ID for indefinido, tente Cadastrar
@@ -117,12 +145,30 @@ function CadastroPost() {
                     }
                 })
 
-                alert('Post cadastrado com sucesso');
+                toast.success('Postagem cadastrada com sucesso', {
+                    position: 'top-right',
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    theme: 'colored',
+                    progress: undefined,
+                  })
 
                 // CATCH: Caso tenha algum erro, pegue esse erro e mande uma msg para o usuário
             } catch (error) {
                 console.log(`Error: ${error}`)
-                alert("Erro, por favor verifique a quantidade minima de caracteres")
+                toast.warning('Erro, por favor verifique a quantidade minima de caracteres', {
+                    position: 'top-right',
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    theme: 'colored',
+                    progress: undefined,
+                  })
             }
         }
 
